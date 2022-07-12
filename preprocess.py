@@ -3,6 +3,7 @@
 import os
 import argparse
 import torch
+import json
 
 import transformers
 from src.normalize_text import normalize
@@ -19,6 +20,7 @@ def apply_tokenizer(path, tokenizer, normalize_text=False):
     lines = []
     with open(path, "r", encoding="utf-8") as fin:
         for k, line in enumerate(fin):
+            line = json.loads(line)["text"]
             if normalize_text:
                 line = normalize(line)
 
