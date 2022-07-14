@@ -5,18 +5,15 @@
 #SBATCH --nodes=4
 #SBATCH --ntasks-per-node=8
 #SBATCH --gres=gpu:8
-#SBATCH --time=72:00:00
-#SBATCH --output=/home/guac/contriever/logtrain/%A
-#SBATCH --mem=450GB
-#SBATCH --signal=USR1@140
-#SBATCH --open-mode=append
+#SBATCH --output=%x_%j.out
+##SBATCH --mem=450GB
 
 port=$(shuf -i 15000-16000 -n 1)
 # NOTE: TDIR must point to the directory specified in `tokenization_pile_script.sh`
 TRAIN_PATH=/fsx/carper/contriever
 OUTPUT_DIR=$TRAIN_PATH/checkpoint/pile/$name
 DATA_DIR=$TRAIN_PATH/encoded-data/bert-base-uncased
-TRAIN_DATASETS="00"
+TRAIN_DATASETS=$DATA_DIR/pile/"00"
 # NOTE: Uncomment the line below to use the full dataset
 #TRAIN_DATASETS=""
 #for i in 0{0..9} {10..29} ; do
@@ -40,7 +37,7 @@ name=$SLURM_JOB_ID-$POOL-rmin$rmin-rmax$rmax-T$T-$QSIZE-$MOM-$mo-$AUG-$PAUG
 source $TRAIN_PATH/.env/bin/activate
 cd $TRAIN_PATH
 
-srun python train.py \
+srun python3.8 train.py \
         --model_path $mp \
         --sampling_coefficient $LC \
         --retriever_model_id $mo --pooling $POOL \
