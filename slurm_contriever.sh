@@ -5,7 +5,7 @@
 #SBATCH --nodes=4
 #SBATCH --ntasks-per-node=8
 #SBATCH --gres=gpu:8
-#SBATCH --output=%x_%j.out
+#SBATCH --output=/fsx/carper/contriever/checkpoint/pile/%x_%j.out  # Set this dir where you want slurm outs to go
 ##SBATCH --mem=450GB
 
 port=$(shuf -i 15000-16000 -n 1)
@@ -17,7 +17,7 @@ TRAIN_DATASETS=$DATA_DIR/pile/"00"
 # NOTE: Uncomment the line below to use the full dataset
 #TRAIN_DATASETS=""
 #for i in 0{0..9} {10..29} ; do
-#    TRAIN_DATASETS+="${TDIR}/pile/{i}"
+#    TRAIN_DATASETS+="${TRAIN_DATASETS}/pile/{i}"
 #done
 
 rmin=0.05
