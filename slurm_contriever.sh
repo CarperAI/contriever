@@ -31,7 +31,7 @@ DATA_DIR=$TRAIN_PATH/encoded-data/bert-base-uncased
 #TRAIN_DATASETS=$DATA_DIR/pile/"00"
 TRAIN_DATASETS=""
 for i in 0{0..9} ; do # {10..29} ; do
-    TRAIN_DATASETS+="${TRAIN_DATASETS}/pile/${i} "
+    TRAIN_DATASETS+="${DATA_DIR}/pile/${i} "
 done
 
 source $TRAIN_PATH/.env/bin/activate
