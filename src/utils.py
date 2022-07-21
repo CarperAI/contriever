@@ -6,9 +6,12 @@ import logging
 import torch
 import errno
 from typing import Union, Tuple, List, Dict
-from collections import defaultdict
-
+from collections import defauldict
 from src import dist_utils
+
+# import a file from the parent directory
+sys.path.append("..")
+from optimizers.distributed_shampoo.distributed_shampoo import DistributedShampoo as Shampoo
 
 Number = Union[float, int]
 
@@ -121,6 +124,19 @@ class CosineScheduler(torch.optim.lr_scheduler.LambdaLR):
 def set_optim(opt, model):
     if opt.optim == 'adamw':
         optimizer = torch.optim.AdamW(model.parameters(), lr=opt.lr, betas=(opt.beta1, opt.beta2), eps=opt.eps, weight_decay=opt.weight_decay)
+    if opt.otim == 'shampoo':
+        optimizer = Shampoo(
+            model.parameters(),
+            lr=opt.lr,
+            betas=(opt.beta1, opt.beta2),
+            epsilon=opt.eps,
+            use_bias_correction=True,
+            adam_w_mode=True,
+            weight_decay=opt.weight_decay,
+            grafting_type=GraftingType.ADAM,
+            grafting_epsilon=1e-08,
+            grafting_beta2=0.999,
+        )
     else:
         raise NotImplementedError('optimizer class not implemented')
 

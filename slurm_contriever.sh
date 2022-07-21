@@ -48,7 +48,7 @@ srun python3.8 train.py \
         --warmup_steps 20000 --total_steps 500000 --lr 0.00005 \
         --name $name \
         --scheduler linear \
-        --optim adamw \
+        --optim shampoo \
         --per_gpu_batch_size 64 \
         --output_dir  $OUTPUT_DIR \
         --main_port $port \
